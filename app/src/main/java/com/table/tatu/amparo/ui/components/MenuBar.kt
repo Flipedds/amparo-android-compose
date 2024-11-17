@@ -1,4 +1,4 @@
-package com.table.tatu.amparo.components
+package com.table.tatu.amparo.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

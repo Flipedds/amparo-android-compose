@@ -1,6 +1,8 @@
-package com.table.tatu.amparo.components
+package com.table.tatu.amparo.ui.components
 
+import android.location.Location
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,11 +12,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -26,22 +25,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.table.tatu.amparo.R
 import com.table.tatu.amparo.ui.theme.amparoButtonColor
 import com.table.tatu.amparo.ui.theme.amparoDefaultColor
 
 @Composable
-fun LoginForm(
-    onNavigateToHome: () -> Unit,
-    onNavigateToCadastro: () -> Unit
+fun CadastroForm(
+    onNavigateToLogin: () -> Unit,
+    location: Location?
 ) {
     Column(
         Modifier
@@ -89,27 +83,12 @@ fun LoginForm(
             mutableStateOf("")
         }
 
-        var passwordVisibility: Boolean by remember { mutableStateOf(false) }
-
         TextField(
             value = senha,
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
-            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            trailingIcon = {
-                val image = if (passwordVisibility)
-                    R.drawable.ic_visible
-                else R.drawable.ic_visible_off
-
-                val description = if (passwordVisibility) "Hide password" else "Show password"
-
-                IconButton(onClick = {passwordVisibility = !passwordVisibility}){
-                    Icon(painter = painterResource(id = image), description)
-                }
-            },
             shape = RoundedCornerShape(15),
             onValueChange = {
                 senha = it
@@ -117,9 +96,38 @@ fun LoginForm(
                 .padding(bottom = 20.dp)
                 .fillMaxWidth())
 
+        Text(
+            text = "Localização",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 5.dp)
+                .align(Alignment.Start)
+                .offset(x = 20.dp, y = 0.dp))
+
+        var localizacao by remember {
+            mutableStateOf("")
+        }
+
+        localizacao = "${location?.latitude} ${location?.longitude}"
+
+        TextField(
+            value = localizacao,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(15),
+            onValueChange = {
+                localizacao = it
+            }, modifier = Modifier
+                .padding(bottom = 20.dp)
+                .fillMaxWidth())
+
         Spacer(modifier = Modifier.height(50.dp))
 
-        Button(onClick = { onNavigateToHome()},
+        Button(onClick = { },
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .size(width = 170.dp, height = 50.dp),
@@ -131,30 +139,26 @@ fun LoginForm(
                 disabledContentColor = Color.Black
             )
         ) {
-            Text(text = "Entrar", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Enviar", fontSize = 20.sp, fontWeight = FontWeight.Bold)
         }
 
-        Spacer(modifier = Modifier.height(25.dp))
+        Spacer(modifier = Modifier.height(30.dp))
 
-        Button(onClick = { onNavigateToCadastro()},
+        Text(
+            text = "Já tenho uma conta",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
             modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 5.dp)
                 .align(Alignment.CenterHorizontally)
-                .size(width = 170.dp, height = 50.dp),
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonColors(
-                containerColor = amparoButtonColor,
-                contentColor = Color.Black,
-                disabledContainerColor = Color.Gray,
-                disabledContentColor = Color.Black
-            )
-        ) {
-            Text(text = "Cadastrar", fontSize = 20.sp, fontWeight = FontWeight.Bold)
-        }
+                .offset(x = 60.dp, y = 0.dp)
+                .clickable { onNavigateToLogin() })
     }
 }
 
 @Preview
 @Composable
-private fun LoginFormPreview() {
-    LoginForm(onNavigateToHome = {}, onNavigateToCadastro = {})
+private fun CadastroFormPreview() {
+    CadastroForm(onNavigateToLogin = {}, location = null)
 }

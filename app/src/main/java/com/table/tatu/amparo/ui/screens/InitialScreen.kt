@@ -1,4 +1,4 @@
-package com.table.tatu.amparo.screens
+package com.table.tatu.amparo.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

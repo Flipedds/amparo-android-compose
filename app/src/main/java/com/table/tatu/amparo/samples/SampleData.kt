@@ -1,26 +1,21 @@
 package com.table.tatu.amparo.samples
 
-import androidx.compose.ui.tooling.preview.datasource.LoremIpsum
-import com.table.tatu.amparo.R
-import com.table.tatu.amparo.models.Evento
+import com.table.tatu.amparo.models.Post
 
-val sampleEventos = listOf(
-    Evento(
-        id = 1,
-        titulo = "Não se cale, Denuncie !",
-        descricao = LoremIpsum(50).values.joinToString(),
-        imagem = R.drawable.ic_amparo_launcher
+val samplePosts = listOf(
+    Post(
+        id = "98493489",
+        title = "Não se cale, Denuncie !",
+        creationDate = "11/11/11"
     ),
-    Evento(
-        id = 1,
-        titulo = "Empoderamento | RECIFE 30 NOV",
-        descricao = LoremIpsum(50).values.joinToString(),
-        imagem = R.drawable.ic_amparo_launcher
+    Post(
+        id = "439i40390",
+        title = "Empoderamento | RECIFE 30 NOV",
+        creationDate = "11/11/11"
     ),
-    Evento(
-        id = 1,
-        titulo = "Não se cale, Denuncie !",
-        descricao = LoremIpsum(50).values.joinToString(),
-        imagem = R.drawable.ic_amparo_launcher
+    Post(
+        id = "gjrigjrigr84",
+        title = "Não se cale, Denuncie !",
+        creationDate = "11/11/11"
     )
 )

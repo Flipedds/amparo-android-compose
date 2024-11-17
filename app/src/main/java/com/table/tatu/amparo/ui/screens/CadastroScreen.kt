@@ -1,4 +1,4 @@
-package com.table.tatu.amparo.screens
+package com.table.tatu.amparo.ui.screens
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.table.tatu.amparo.R
-import com.table.tatu.amparo.components.CadastroForm
+import com.table.tatu.amparo.ui.components.CadastroForm
 import com.table.tatu.amparo.ui.theme.amparoDefaultColor
 
 @Composable

@@ -1,4 +1,4 @@
-package com.table.tatu.amparo.screens
+package com.table.tatu.amparo.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.table.tatu.amparo.R
-import com.table.tatu.amparo.components.LoginForm
+import com.table.tatu.amparo.ui.components.LoginForm
 import com.table.tatu.amparo.ui.theme.amparoDefaultColor
 
 @Composable

@@ -1,4 +1,4 @@
-package com.table.tatu.amparo.screens
+package com.table.tatu.amparo.ui.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,43 +14,48 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.table.tatu.amparo.R
-import com.table.tatu.amparo.components.EventoSection
-import com.table.tatu.amparo.components.MenuBar
-import com.table.tatu.amparo.models.Evento
-import com.table.tatu.amparo.samples.sampleEventos
+import com.table.tatu.amparo.ui.components.PostSection
+import com.table.tatu.amparo.ui.components.MenuBar
+import com.table.tatu.amparo.models.Post
 import com.table.tatu.amparo.ui.theme.amparoButtonColor
 import com.table.tatu.amparo.ui.theme.amparoDefaultColor
 import com.table.tatu.amparo.ui.theme.amparoHomeSecondaryTextColor
 import com.table.tatu.amparo.ui.theme.amparoHomeTextColor
 import com.table.tatu.amparo.ui.theme.grandstanderFontFamily
+import com.table.tatu.amparo.ui.viewmodels.HomeScreenViewModel
+import com.table.tatu.amparo.ui.viewmodels.UiState
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen(navController: NavHostController, eventos: List<Evento>) {
+fun HomeScreen() {
     Scaffold(
         bottomBar = {
             MenuBar()
         },
         topBar = {
-            Spacer(modifier = Modifier
-                .height(39.dp)
-                .fillMaxWidth()
-                .background(amparoButtonColor))
+            Spacer(
+                modifier = Modifier
+                    .height(39.dp)
+                    .fillMaxWidth()
+                    .background(amparoButtonColor)
+            )
         }
     ) { innerPadding ->
         Column(
             Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .background(amparoDefaultColor)) {
+                .background(amparoDefaultColor)
+        ) {
             Image(
                 painterResource(id = R.drawable.ic_amparo_launcher),
                 contentDescription = "Logo Amparo",
@@ -58,45 +63,68 @@ fun HomeScreen(navController: NavHostController, eventos: List<Evento>) {
                     .width(302.dp)
                     .height(114.dp)
                     .offset(x = 0.dp, y = -(10).dp)
-                    .align(Alignment.CenterHorizontally))
-            Text(text = "Estamos aqui para lhe ajudar",
+                    .align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = "Estamos aqui para lhe ajudar",
                 fontFamily = grandstanderFontFamily,
                 fontSize = 16.sp,
                 color = amparoHomeTextColor,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .offset(y = -(25).dp))
-            Text(text = "peça ajuda",
+                    .offset(y = -(25).dp)
+            )
+            Text(
+                text = "peça ajuda",
                 fontFamily = grandstanderFontFamily,
                 fontSize = 24.sp,
                 color = amparoHomeTextColor,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .offset(y = -(20).dp))
+                    .offset(y = -(20).dp)
+            )
             Row(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                Text(text = "busque ",
+                Text(
+                    text = "busque ",
                     fontFamily = grandstanderFontFamily,
                     fontSize = 24.sp,
                     color = amparoHomeTextColor,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
-                        .offset(y = -(20).dp))
-                Text(text = "Amparo",
+                        .offset(y = -(20).dp)
+                )
+                Text(
+                    text = "Amparo",
                     fontFamily = grandstanderFontFamily,
                     fontSize = 24.sp,
                     color = amparoHomeSecondaryTextColor,
                     modifier = Modifier
                         .align(Alignment.CenterVertically)
-                        .offset(y = -(20).dp))
+                        .offset(y = -(20).dp)
+                )
             }
-            EventoSection(eventos = eventos)
+            val viewModel = koinViewModel<HomeScreenViewModel>()
+            val postsState by viewModel.postsState.collectAsState()
+
+            when (postsState) {
+                is UiState.Loading -> Text(
+                    modifier = Modifier.padding(horizontal = 31.5.dp),
+                    text = "Carregando ...."
+                )
+
+                is UiState.Success -> PostSection(posts = (postsState as UiState.Success<List<Post>>).data)
+                is UiState.Error -> Text(
+                    modifier = Modifier.padding(horizontal = 31.5.dp),
+                    text = (postsState as UiState.Error).message
+                )
+            }
+
         }
     }
 }
 
 @Preview
 @Composable
-private fun HomeScreenPreview(){
-    val navController = rememberNavController()
-    HomeScreen(navController, sampleEventos)
+private fun HomeScreenPreview() {
+    HomeScreen()
 }
