@@ -29,8 +29,9 @@ class HomeScreenViewModel(
         viewModelScope.launch {
             try {
                 _postsState.value = UiState.Loading
-                val eventos = amparoService.getAllPosts()
-                _postsState.value = UiState.Success(eventos)
+                amparoService.getAllPosts().collect { posts ->
+                    _postsState.value = UiState.Success(posts)
+                }
             } catch (e: Exception){
                 _postsState.value = UiState.Error("Erro ao carregar posts: ${e.message}")
             }

@@ -5,11 +5,11 @@ import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
-import retrofit2.converter.moshi.MoshiConverterFactory
 import com.table.tatu.amparo.services.AmparoService
 import com.table.tatu.amparo.ui.viewmodels.HomeScreenViewModel
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 val appModule = module {
@@ -25,7 +25,7 @@ val netWorkModule = module {
             })
             .build()
         val retrofit = Retrofit.Builder()
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl("URL_API")
             .client(client)
             .build()
