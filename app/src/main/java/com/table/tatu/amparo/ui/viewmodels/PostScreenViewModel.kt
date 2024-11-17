@@ -15,7 +15,7 @@ sealed class UiState<out T>{
 }
 
 
-class HomeScreenViewModel(
+class PostScreenViewModel(
     private val amparoService: AmparoService
 ): ViewModel() {
     private val _postsState = MutableStateFlow<UiState<List<Post>>>(UiState.Loading)

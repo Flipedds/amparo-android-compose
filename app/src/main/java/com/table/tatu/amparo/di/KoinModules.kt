@@ -6,14 +6,14 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import com.table.tatu.amparo.services.AmparoService
-import com.table.tatu.amparo.ui.viewmodels.HomeScreenViewModel
+import com.table.tatu.amparo.ui.viewmodels.PostScreenViewModel
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
 val appModule = module {
-    viewModelOf(::HomeScreenViewModel)
+    viewModelOf(::PostScreenViewModel)
     singleOf(::AmparoService)
 }
 

@@ -22,7 +22,7 @@ fun PostSection(
         Modifier
             .verticalScroll(rememberScrollState())
             .padding(horizontal = 31.5.dp, vertical = 5.dp)
-            .heightIn(258.dp, 510.dp),
+            .heightIn(258.dp, 590.dp),
         verticalArrangement = Arrangement.spacedBy(40.dp)
     ) {
         items(posts){ evento ->
