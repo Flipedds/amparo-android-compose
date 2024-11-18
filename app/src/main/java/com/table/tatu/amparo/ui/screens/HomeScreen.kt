@@ -125,7 +125,7 @@ fun HomeScreen() {
             when (val item = items[page]) {
                 NavItem.Home -> PostsScreen()
                 NavItem.Account -> MockScreen(text = item.label)
-                NavItem.Amparo -> MockScreen(text = item.label)
+                NavItem.Amparo -> AmparoScreen()
                 NavItem.Calendar -> MockScreen(text = item.label)
                 NavItem.Denounce -> MockScreen(text = item.label)
             }
