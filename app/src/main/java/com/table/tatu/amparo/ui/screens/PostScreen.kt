@@ -21,13 +21,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.table.tatu.amparo.R
 import com.table.tatu.amparo.models.Post
+import com.table.tatu.amparo.ui.animations.LoadingAnimation
 import com.table.tatu.amparo.ui.components.PostSection
+import com.table.tatu.amparo.ui.states.UiState
 import com.table.tatu.amparo.ui.theme.amparoDefaultColor
 import com.table.tatu.amparo.ui.theme.amparoHomeSecondaryTextColor
 import com.table.tatu.amparo.ui.theme.amparoHomeTextColor
 import com.table.tatu.amparo.ui.theme.grandstanderFontFamily
 import com.table.tatu.amparo.ui.viewmodels.PostScreenViewModel
-import com.table.tatu.amparo.ui.viewmodels.UiState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -88,9 +89,9 @@ fun PostsScreen() {
         val postsState by viewModel.postsState.collectAsState()
 
         when (postsState) {
-            is UiState.Loading -> Text(
-                modifier = Modifier.padding(horizontal = 31.5.dp),
-                text = "Carregando ...."
+            is UiState.Loading -> LoadingAnimation(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
             )
 
             is UiState.Success -> PostSection(posts = (postsState as UiState.Success<List<Post>>).data)
@@ -98,6 +99,8 @@ fun PostsScreen() {
                 modifier = Modifier.padding(horizontal = 31.5.dp),
                 text = (postsState as UiState.Error).message
             )
+
+            UiState.Default -> TODO()
         }
 
     }
@@ -106,6 +109,6 @@ fun PostsScreen() {
 
 @Preview
 @Composable
-fun PostsScreenPreview(){
+fun PostsScreenPreview() {
     PostsScreen()
 }

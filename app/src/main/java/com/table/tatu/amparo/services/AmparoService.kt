@@ -1,5 +1,7 @@
 package com.table.tatu.amparo.services
 
+import com.table.tatu.amparo.dtos.AuthLoginResponse
+import com.table.tatu.amparo.models.Credentials
 import com.table.tatu.amparo.models.Post
 import com.table.tatu.amparo.repositories.AmparoRepository
 import kotlinx.coroutines.delay
@@ -10,9 +12,15 @@ class AmparoService(
     private val amparoRepository: AmparoRepository
 ) {
     suspend fun getAllPosts(): Flow<List<Post>> = flow {
-        while (true){
+        while (true) {
             emit(amparoRepository.findAllPosts("application/json"))
             delay(5000)
         }
+    }
+
+    suspend fun authenticateUser(login: String, senha: String): AuthLoginResponse {
+        return amparoRepository.authenticateUser(
+            "application/json", Credentials(login, senha)
+        )
     }
 }

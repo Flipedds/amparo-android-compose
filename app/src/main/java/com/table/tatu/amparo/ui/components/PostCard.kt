@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.rememberAsyncImagePainter
 import com.table.tatu.amparo.R
 import com.table.tatu.amparo.models.Post
 
@@ -30,9 +31,13 @@ fun PostCard(post: Post){
                 .heightIn(220.dp, 240.dp)
                 .width(367.dp)
         ) {
+            val painter = rememberAsyncImagePainter(
+                model = post.imageUrl,
+                placeholder = painterResource(id = R.drawable.ic_amparo_launcher))
+
             Image(
-                painter = painterResource(id = R.drawable.ic_amparo_launcher),
-                contentDescription = "post card",
+                painter = painter,
+                contentDescription = post.title,
                 modifier = Modifier
                     .width(367.dp)
                     .height(175.3.dp))
@@ -53,7 +58,9 @@ private fun PostCardPreview(){
         Post(
             id = "fjkdfjf9d",
             title = "Não se cale, Denuncie !",
-            creationDate = "11/12/2024"
+            creationDate = "11/12/2024",
+            imageUrl = "",
+            content = listOf()
         )
     )
 }

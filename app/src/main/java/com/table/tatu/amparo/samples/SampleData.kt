@@ -7,17 +7,23 @@ val samplePosts = listOf(
     Post(
         id = "98493489",
         title = "Não se cale, Denuncie !",
-        creationDate = "11/11/11"
+        creationDate = "11/11/11",
+        imageUrl = "",
+        content = listOf()
     ),
     Post(
         id = "439i40390",
         title = "Empoderamento | RECIFE 30 NOV",
-        creationDate = "11/11/11"
+        creationDate = "11/11/11",
+        imageUrl = "",
+        content = listOf()
     ),
     Post(
         id = "gjrigjrigr84",
         title = "Não se cale, Denuncie !",
-        creationDate = "11/11/11"
+        creationDate = "11/11/11",
+        imageUrl = "",
+        content = listOf()
     )
 )
 

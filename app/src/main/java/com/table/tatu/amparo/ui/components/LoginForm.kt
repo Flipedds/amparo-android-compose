@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,7 +41,7 @@ import com.table.tatu.amparo.ui.theme.amparoDefaultColor
 
 @Composable
 fun LoginForm(
-    onNavigateToHome: () -> Unit,
+    onNavigateToHome: (String, String) -> Unit,
     onNavigateToCadastro: () -> Unit
 ) {
     Column(
@@ -119,7 +120,17 @@ fun LoginForm(
 
         Spacer(modifier = Modifier.height(50.dp))
 
-        Button(onClick = { onNavigateToHome()},
+        var isFormFilled by remember {
+            mutableStateOf(false)
+        }
+
+        LaunchedEffect(key1 = email, key2 = senha) {
+            isFormFilled = email.isNotBlank() && senha.isNotBlank()
+        }
+
+        Button(
+            enabled = isFormFilled,
+            onClick = { onNavigateToHome(email, senha)},
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .size(width = 170.dp, height = 50.dp),
@@ -156,5 +167,5 @@ fun LoginForm(
 @Preview
 @Composable
 private fun LoginFormPreview() {
-    LoginForm(onNavigateToHome = {}, onNavigateToCadastro = {})
+    LoginForm(onNavigateToHome = { _: String, _: String -> }, onNavigateToCadastro = {})
 }

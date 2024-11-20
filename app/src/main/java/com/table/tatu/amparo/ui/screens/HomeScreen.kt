@@ -10,7 +10,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -63,7 +66,7 @@ sealed class NavItem(
 }
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onLogout: () -> Unit) {
     val items = listOf(
         NavItem.Home,
         NavItem.Account,
@@ -116,6 +119,13 @@ fun HomeScreen() {
                     .fillMaxWidth()
                     .background(amparoButtonColor)
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                containerColor = amparoButtonColor,
+                onClick = { onLogout() }) {
+                Icon(imageVector = Icons.Default.Close, contentDescription = "Sair")
+            }
         }
     ) { innerPadding ->
         HorizontalPager(
@@ -149,5 +159,5 @@ fun MockScreen(text: String) {
 @Preview
 @Composable
 private fun HomeScreenPreview() {
-    HomeScreen()
+    HomeScreen(onLogout = {})
 }

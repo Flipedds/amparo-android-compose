@@ -7,5 +7,7 @@ import kotlinx.serialization.Serializable
 class Post(
     @SerializedName("id") val id: String,
     @SerializedName("title") val title: String,
-    @SerializedName("creationDate") val creationDate: String
+    @SerializedName("creationDate") val creationDate: String,
+    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("content") val content: List<String>
 ) {}

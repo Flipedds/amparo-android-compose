@@ -4,20 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.table.tatu.amparo.models.Post
 import com.table.tatu.amparo.services.AmparoService
+import com.table.tatu.amparo.ui.states.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-sealed class UiState<out T>{
-    data object Loading : UiState<Nothing>()
-    data class Success<T>(val data: T) : UiState<T>()
-    data class Error(val message: String) : UiState<Nothing>()
-}
-
-
 class PostScreenViewModel(
     private val amparoService: AmparoService
-): ViewModel() {
+) : ViewModel() {
     private val _postsState = MutableStateFlow<UiState<List<Post>>>(UiState.Loading)
     val postsState: StateFlow<UiState<List<Post>>> = _postsState
 
@@ -25,14 +19,14 @@ class PostScreenViewModel(
         fetchPosts()
     }
 
-    private fun fetchPosts(){
+    private fun fetchPosts() {
         viewModelScope.launch {
             try {
                 _postsState.value = UiState.Loading
                 amparoService.getAllPosts().collect { posts ->
                     _postsState.value = UiState.Success(posts)
                 }
-            } catch (e: Exception){
+            } catch (e: Exception) {
                 _postsState.value = UiState.Error("Erro ao carregar posts: ${e.message}")
             }
         }
