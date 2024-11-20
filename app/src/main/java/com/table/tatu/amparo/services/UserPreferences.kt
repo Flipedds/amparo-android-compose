@@ -36,7 +36,7 @@ class UserPreferences(context: Context) {
         }
     }
 
-    suspend fun clearJwtToken(jwt: String) {
+    suspend fun clearJwtToken() {
         dataStore.edit { preferences ->
             preferences.remove(JWT_TOKEN)
         }

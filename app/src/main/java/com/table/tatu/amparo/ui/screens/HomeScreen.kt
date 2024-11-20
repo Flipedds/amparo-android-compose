@@ -137,7 +137,7 @@ fun HomeScreen(onLogout: () -> Unit) {
                 NavItem.PersonHelp -> MockScreen(text = item.label)
                 NavItem.LocalHelp -> AmparoScreen()
                 NavItem.CallHelp -> MockScreen(text = item.label)
-                NavItem.Denounce -> MockScreen(text = item.label)
+                NavItem.Denounce -> DenounceScreen()
             }
         }
     }

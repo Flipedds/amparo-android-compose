@@ -2,6 +2,7 @@ package com.table.tatu.amparo.services
 
 import com.table.tatu.amparo.dtos.AuthLoginResponse
 import com.table.tatu.amparo.models.Credentials
+import com.table.tatu.amparo.models.Denounce
 import com.table.tatu.amparo.models.Post
 import com.table.tatu.amparo.repositories.AmparoRepository
 import kotlinx.coroutines.delay
@@ -22,5 +23,9 @@ class AmparoService(
         return amparoRepository.authenticateUser(
             "application/json", Credentials(login, senha)
         )
+    }
+
+    suspend fun newDenounce(token: String, name: String, description: String){
+        amparoRepository.newDenounce(token, "application/json", Denounce(name, description))
     }
 }

@@ -5,8 +5,11 @@ import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 import com.table.tatu.amparo.services.AmparoService
+import com.table.tatu.amparo.services.LocationService
 import com.table.tatu.amparo.ui.viewmodels.PostScreenViewModel
 import com.table.tatu.amparo.ui.viewmodels.LoginScreenViewModel
+import com.table.tatu.amparo.ui.viewmodels.DenounceScreenViewModel
+import com.table.tatu.amparo.ui.viewmodels.AmparoScreenViewModel
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -17,8 +20,11 @@ import java.util.concurrent.TimeUnit
 val appModule = module {
     viewModelOf(::PostScreenViewModel)
     viewModelOf(::LoginScreenViewModel)
+    viewModelOf(::DenounceScreenViewModel)
+    viewModelOf(::AmparoScreenViewModel)
     singleOf(::AmparoService)
     singleOf(::UserPreferences)
+    singleOf(::LocationService)
 }
 
 val netWorkModule = module {
