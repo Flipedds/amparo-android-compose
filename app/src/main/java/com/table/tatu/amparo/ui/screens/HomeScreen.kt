@@ -44,9 +44,9 @@ sealed class NavItem(
         label = "Home"
     )
 
-    data object Account : NavItem(
+    data object PersonHelp : NavItem(
         icon = R.drawable.ic_account,
-        label = "Conta"
+        label = "Pessoas a quem pedir ajuda"
     )
 
     data object Denounce : NavItem(
@@ -54,12 +54,12 @@ sealed class NavItem(
         label = "Denúncia"
     )
 
-    data object Calendar : NavItem(
-        icon = R.drawable.ic_calendar,
-        label = "Calendário"
+    data object CallHelp : NavItem(
+        icon = R.drawable.ic_phone,
+        label = "Ajuda"
     )
 
-    data object Amparo : NavItem(
+    data object LocalHelp : NavItem(
         icon = R.drawable.ic_map,
         label = "Locais"
     )
@@ -69,10 +69,10 @@ sealed class NavItem(
 fun HomeScreen(onLogout: () -> Unit) {
     val items = listOf(
         NavItem.Home,
-        NavItem.Account,
+        NavItem.PersonHelp,
         NavItem.Denounce,
-        NavItem.Calendar,
-        NavItem.Amparo
+        NavItem.CallHelp,
+        NavItem.LocalHelp
     )
 
     var selectedItem by remember {
@@ -134,9 +134,9 @@ fun HomeScreen(onLogout: () -> Unit) {
         ) { page ->
             when (val item = items[page]) {
                 NavItem.Home -> PostsScreen()
-                NavItem.Account -> MockScreen(text = item.label)
-                NavItem.Amparo -> AmparoScreen()
-                NavItem.Calendar -> MockScreen(text = item.label)
+                NavItem.PersonHelp -> MockScreen(text = item.label)
+                NavItem.LocalHelp -> AmparoScreen()
+                NavItem.CallHelp -> MockScreen(text = item.label)
                 NavItem.Denounce -> MockScreen(text = item.label)
             }
         }
