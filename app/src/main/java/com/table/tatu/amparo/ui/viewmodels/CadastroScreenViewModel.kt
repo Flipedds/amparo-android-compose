@@ -29,11 +29,14 @@ class CadastroScreenViewModel(
             try {
                 val authLoginResponse: AuthLoginResponse = amparoService.registerUser(form.email, form.senha)
                 val user = amparoService.getUser("Bearer ${authLoginResponse.accessToken}")
+                val userHeader = user.toUserHeader()
+                val userCredential = user.toUserCredential()
 
-                user.cpf = form.cpf
-                user.name = form.nome
+                userHeader.name = form.nome
+                userCredential.cpf = form.cpf
 
-                amparoService.updateUser(user)
+                amparoService.updateHeaderUser("Bearer ${authLoginResponse.accessToken}", userHeader)
+                amparoService.updateCredentialUser("Bearer ${authLoginResponse.accessToken}", userCredential)
 
                 _toastEvent.emit("Cadastro criado com sucesso.")
 

@@ -5,6 +5,8 @@ import com.table.tatu.amparo.models.Credentials
 import com.table.tatu.amparo.models.Denounce
 import com.table.tatu.amparo.models.Post
 import com.table.tatu.amparo.models.User
+import com.table.tatu.amparo.models.UserCredential
+import com.table.tatu.amparo.models.UserHeader
 import com.table.tatu.amparo.repositories.AmparoRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -36,11 +38,15 @@ class AmparoService(
         return amparoRepository.getUser("application/json", token)
     }
 
-    suspend fun updateUser(user: User): User {
-        return amparoRepository.updateUser("application/json", user, user.id)
+    suspend fun updateHeaderUser(token: String, userHeader: UserHeader): UserHeader {
+        return amparoRepository.updateHeaderUser(token, "application/json", userHeader)
     }
 
-    suspend fun newDenounce(token: String, name: String, description: String){
+    suspend fun updateCredentialUser(token: String, userHeader: UserCredential): UserCredential {
+        return amparoRepository.updateCredentialUser(token, "application/json", userHeader)
+    }
+
+    suspend fun newDenounce(token: String, name: String, description: String) {
         amparoRepository.newDenounce(token, "application/json", Denounce(name, description))
     }
 }
