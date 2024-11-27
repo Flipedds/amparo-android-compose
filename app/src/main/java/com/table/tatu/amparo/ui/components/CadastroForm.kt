@@ -1,6 +1,6 @@
 package com.table.tatu.amparo.ui.components
 
-import android.location.Location
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -12,12 +12,16 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,49 +29,142 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.table.tatu.amparo.R
+import com.table.tatu.amparo.extensions.isDifferent
+import com.table.tatu.amparo.extensions.isEqualsAndNotBlank
+import com.table.tatu.amparo.extensions.isPassValid
+import com.table.tatu.amparo.ui.states.CadastroFormState
 import com.table.tatu.amparo.ui.theme.amparoButtonColor
 import com.table.tatu.amparo.ui.theme.amparoDefaultColor
+import io.github.skeptick.inputmask.compose.phone.PhoneInputMaskVisualTransformation
 
 @Composable
 fun CadastroForm(
     onNavigateToLogin: () -> Unit,
-    location: Location?
+    onCreateNewUser: (CadastroFormState) -> Unit
 ) {
+    var formState by remember { mutableStateOf(CadastroFormState()) }
+    var isFormFilled by remember { mutableStateOf(false) }
+    var isPassAndConfirmEquals by remember { mutableStateOf(false) }
+    var passwordVisibility: Boolean by remember { mutableStateOf(false) }
+    var confirmPasswordVisibility: Boolean by remember { mutableStateOf(false) }
+    var isPasswordValid: Boolean by remember { mutableStateOf(false) }
+
+    LaunchedEffect(formState) {
+        isFormFilled = formState.run {
+            nome.isNotBlank() && cpf.isNotBlank()
+                    && email.isNotBlank() && senha.isEqualsAndNotBlank(confirmarSenha)
+        }
+        isPassAndConfirmEquals = formState.run {
+            senha.isDifferent(confirmarSenha)
+        }
+    }
+
+    LaunchedEffect(key1 = formState.senha) {
+        isPasswordValid = formState.run {
+            senha.isPassValid()
+        }
+    }
+
     Column(
         Modifier
             .fillMaxSize()
             .background(amparoDefaultColor)
-            .padding(horizontal = 40.dp)) {
+            .padding(horizontal = 40.dp)
+    ) {
+
         Text(
-            text = "Telefone ou E-mail",
+            text = "Nome Completo",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.Start)
                 .padding(bottom = 5.dp)
-                .offset(x = 20.dp, y = 0.dp))
-
-        var email by remember {
-            mutableStateOf("")
-        }
+                .offset(x = 20.dp, y = 0.dp)
+        )
 
         TextField(
-            value = email,
+            value = formState.nome,
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
             shape = RoundedCornerShape(15),
             onValueChange = {
-                email = it
+                formState = formState.copy(nome = it)
             }, modifier = Modifier
+                .testTag("nome field")
                 .padding(bottom = 20.dp)
-                .fillMaxWidth())
+                .fillMaxWidth()
+        )
+
+        Text(
+            text = "Cpf",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Start)
+                .padding(bottom = 5.dp)
+                .offset(x = 20.dp, y = 0.dp)
+        )
+
+        val mask = "[000].[000].[000]-[00]"
+        val visualTransformation = remember(mask) {
+            PhoneInputMaskVisualTransformation(mask)
+        }
+
+        TextField(
+            value = formState.cpf,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(15),
+            visualTransformation = visualTransformation,
+            onValueChange = {
+                formState = formState.copy(cpf = visualTransformation.sanitize(it))
+            }, modifier = Modifier
+                .testTag("cpf field")
+                .padding(bottom = 20.dp)
+                .fillMaxWidth()
+        )
+
+        Text(
+            text = "E-mail",
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.Start)
+                .padding(bottom = 5.dp)
+                .offset(x = 20.dp, y = 0.dp)
+        )
+
+        TextField(
+            value = formState.email,
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent
+            ),
+            shape = RoundedCornerShape(15),
+            onValueChange = {
+                formState = formState.copy(email = it)
+            }, modifier = Modifier
+                .testTag("email field")
+                .padding(bottom = 20.dp)
+                .fillMaxWidth()
+        )
 
         Text(
             text = "Senha",
@@ -77,60 +174,116 @@ fun CadastroForm(
                 .fillMaxWidth()
                 .padding(bottom = 5.dp)
                 .align(Alignment.Start)
-                .offset(x = 20.dp, y = 0.dp))
-
-        var senha by remember {
-            mutableStateOf("")
-        }
+                .offset(x = 20.dp, y = 0.dp)
+        )
 
         TextField(
-            value = senha,
+            value = formState.senha,
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
+            visualTransformation = if (passwordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                val image = if (passwordVisibility)
+                    R.drawable.ic_visible
+                else R.drawable.ic_visible_off
+
+                val description = if (passwordVisibility) "Hide password" else "Show password"
+
+                IconButton(onClick = { passwordVisibility = !passwordVisibility }) {
+                    Icon(painter = painterResource(id = image), description)
+                }
+            },
             shape = RoundedCornerShape(15),
             onValueChange = {
-                senha = it
+                formState = formState.copy(senha = it)
             }, modifier = Modifier
+                .testTag("senha field")
                 .padding(bottom = 20.dp)
-                .fillMaxWidth())
+                .fillMaxWidth()
+        )
 
         Text(
-            text = "Localização",
+            text = "Confirmar Senha",
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 5.dp)
                 .align(Alignment.Start)
-                .offset(x = 20.dp, y = 0.dp))
-
-        var localizacao by remember {
-            mutableStateOf("")
-        }
-
-        localizacao = "${location?.latitude} ${location?.longitude}"
+                .offset(x = 20.dp, y = 0.dp)
+        )
 
         TextField(
-            value = localizacao,
+            value = formState.confirmarSenha,
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent
             ),
+            visualTransformation = if (confirmPasswordVisibility) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            trailingIcon = {
+                val image = if (confirmPasswordVisibility)
+                    R.drawable.ic_visible
+                else R.drawable.ic_visible_off
+
+                val description =
+                    if (confirmPasswordVisibility) "Hide password" else "Show password"
+
+                IconButton(onClick = { confirmPasswordVisibility = !confirmPasswordVisibility }) {
+                    Icon(painter = painterResource(id = image), description)
+                }
+            },
             shape = RoundedCornerShape(15),
             onValueChange = {
-                localizacao = it
+                formState = formState.copy(confirmarSenha = it)
             }, modifier = Modifier
+                .testTag("confirmar senha field")
                 .padding(bottom = 20.dp)
-                .fillMaxWidth())
+                .fillMaxWidth()
+        )
 
-        Spacer(modifier = Modifier.height(50.dp))
+        AnimatedVisibility(visible = isPassAndConfirmEquals) {
+            Text(
+                text = "Senhas devem ser iguais",
+                fontWeight = FontWeight.Bold,
+                color = Color.Red,
+                fontSize = 15.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .offset(x = 0.dp, y = 0.dp)
+            )
+        }
 
-        Button(onClick = { },
+        AnimatedVisibility(visible = !isPasswordValid) {
+            Text(
+                text = "Senha inválida",
+                fontWeight = FontWeight.Bold,
+                color = Color.Red,
+                fontSize = 15.sp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .offset(x = 0.dp, y = 0.dp)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        Button(
+            onClick = {
+                onCreateNewUser(formState)
+            },
             modifier = Modifier
+                .testTag("enviar button")
                 .align(Alignment.CenterHorizontally)
                 .size(width = 170.dp, height = 50.dp),
+            enabled = isFormFilled,
             shape = RoundedCornerShape(8.dp),
             colors = ButtonColors(
                 containerColor = amparoButtonColor,
@@ -160,5 +313,5 @@ fun CadastroForm(
 @Preview
 @Composable
 private fun CadastroFormPreview() {
-    CadastroForm(onNavigateToLogin = {}, location = null)
+    CadastroForm(onNavigateToLogin = {}, onCreateNewUser = { _: CadastroFormState -> })
 }

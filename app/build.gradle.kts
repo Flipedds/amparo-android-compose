@@ -58,6 +58,8 @@ dependencies {
     implementation ("com.squareup.retrofit2:retrofit:2.11.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("io.github.skeptick.inputmask:core:0.0.4")
+    implementation("io.github.skeptick.inputmask:compose:0.0.4")
     implementation(libs.koinx.android.compose)
     implementation(libs.koin.android)
     implementation(libs.androidx.core.ktx)

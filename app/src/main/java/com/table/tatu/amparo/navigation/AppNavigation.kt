@@ -14,6 +14,8 @@ import com.table.tatu.amparo.ui.screens.CadastroScreen
 import com.table.tatu.amparo.ui.screens.HomeScreen
 import com.table.tatu.amparo.ui.screens.InitialScreen
 import com.table.tatu.amparo.ui.screens.LoginScreen
+import com.table.tatu.amparo.ui.states.CadastroFormState
+import com.table.tatu.amparo.ui.viewmodels.CadastroScreenViewModel
 import com.table.tatu.amparo.ui.viewmodels.LoginScreenViewModel
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -34,6 +36,7 @@ object Home
 fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
     val loginScreenViewModel = koinViewModel<LoginScreenViewModel>()
+    val cadastroScreenViewModel = koinViewModel<CadastroScreenViewModel>()
     val isLoggedIn by loginScreenViewModel.isLoggedIn.collectAsState()
     val context = LocalContext.current
 
@@ -71,13 +74,26 @@ fun AppNavigation() {
                 })
         }
         composable<Cadastro> {
-            CadastroScreen(onNavigateToLogin = {
-                navController.navigate(Login) {
-                    popUpTo<Cadastro> {
-                        inclusive = true
+            CadastroScreen(
+                cadastroScreenViewModel = cadastroScreenViewModel,
+                onNavigateToLogin = {
+                    navController.navigate(Login) {
+                        popUpTo<Cadastro> {
+                            inclusive = true
+                        }
                     }
-                }
-            })
+                }, onCreateNewUser = { form: CadastroFormState ->
+                    cadastroScreenViewModel.createNewUser(
+                        form,
+                        onSuccess = {
+                            navController.navigate(Login) {
+                                popUpTo<Cadastro> {
+                                    inclusive = true
+                                }
+                            }
+                        }
+                    )
+                })
         }
         composable<Home> {
             HomeScreen(onLogout = {
