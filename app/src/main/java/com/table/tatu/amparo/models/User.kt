@@ -25,11 +25,9 @@ class User(
     @SerializedName("email") val email: String,
     @SerializedName("description") val description: String? = null,
     @SerializedName("phoneNumber") var phoneNumber: String? = null,
-    @SerializedName("roles") var roles: List<String>? = null,
     @SerializedName("age") var age: String? = null,
     @SerializedName("cpf") var cpf: String? = null,
-    @SerializedName("address") var address: Address? = null,
-    @SerializedName("supportNetwork") var supportNetwork: List<SupportNetwork>? = null
+    @SerializedName("address") var address: Address? = null
 ) {
     fun toUserHeader(): UserHeader {
         return UserHeader(this.name, this.description, this.address, this.age)

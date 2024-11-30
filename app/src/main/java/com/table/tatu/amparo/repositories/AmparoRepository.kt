@@ -4,6 +4,7 @@ import com.table.tatu.amparo.dtos.AuthLoginResponse
 import com.table.tatu.amparo.models.Credentials
 import com.table.tatu.amparo.models.Denounce
 import com.table.tatu.amparo.models.Post
+import com.table.tatu.amparo.models.SupportNetwork
 import com.table.tatu.amparo.models.User
 import com.table.tatu.amparo.models.UserCredential
 import com.table.tatu.amparo.models.UserHeader
@@ -48,6 +49,19 @@ interface AmparoRepository {
         @Header("Content-Type") contentType: String,
         @Body userCredential: UserCredential
     ): UserCredential
+
+    @GET("sup/")
+    suspend fun getUserSupportNetwork(
+        @Header("Authorization") token: String,
+        @Header("Content-Type") contentType: String
+    ): MutableList<SupportNetwork>
+
+    @PUT("sup/")
+    suspend fun updateUserSupportNetwork(
+        @Header("Authorization") token: String,
+        @Header("Content-Type") contentType: String,
+        @Body supportNetwork: MutableList<SupportNetwork>
+    ): MutableList<SupportNetwork>
 
     @POST("denounce/")
     suspend fun newDenounce(

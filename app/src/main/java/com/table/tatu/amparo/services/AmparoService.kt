@@ -4,6 +4,7 @@ import com.table.tatu.amparo.dtos.AuthLoginResponse
 import com.table.tatu.amparo.models.Credentials
 import com.table.tatu.amparo.models.Denounce
 import com.table.tatu.amparo.models.Post
+import com.table.tatu.amparo.models.SupportNetwork
 import com.table.tatu.amparo.models.User
 import com.table.tatu.amparo.models.UserCredential
 import com.table.tatu.amparo.models.UserHeader
@@ -20,6 +21,14 @@ class AmparoService(
             emit(amparoRepository.findAllPosts("application/json"))
             delay(5000)
         }
+    }
+
+    suspend fun getUserSupportNetwork(token: String): MutableList<SupportNetwork> {
+        return amparoRepository.getUserSupportNetwork(token, "application/json")
+    }
+
+    suspend fun updateUserSupportNetwork(token: String, userSupportNetwork: MutableList<SupportNetwork>): MutableList<SupportNetwork> {
+        return amparoRepository.updateUserSupportNetwork(token, "application/json", userSupportNetwork)
     }
 
     suspend fun authenticateUser(login: String, senha: String): AuthLoginResponse {

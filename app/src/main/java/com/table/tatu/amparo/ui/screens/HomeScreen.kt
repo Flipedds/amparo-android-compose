@@ -46,7 +46,7 @@ sealed class NavItem(
 
     data object PersonHelp : NavItem(
         icon = R.drawable.ic_account,
-        label = "Pessoas a quem pedir ajuda"
+        label = "Perfil"
     )
 
     data object Denounce : NavItem(
@@ -100,6 +100,7 @@ fun HomeScreen(onLogout: () -> Unit) {
                     NavigationBarItem(
                         selected = navItem == selectedItem,
                         onClick = { selectedItem = navItem },
+                        label = { Text(text = navItem.label)},
                         icon = {
                             Icon(
                                 painter = painterResource(
@@ -136,7 +137,7 @@ fun HomeScreen(onLogout: () -> Unit) {
                 NavItem.Home -> PostsScreen()
                 NavItem.PersonHelp -> MockScreen(text = item.label)
                 NavItem.LocalHelp -> AmparoScreen()
-                NavItem.CallHelp -> MockScreen(text = item.label)
+                NavItem.CallHelp -> AjudaScreen()
                 NavItem.Denounce -> DenounceScreen()
             }
         }

@@ -11,6 +11,7 @@ import com.table.tatu.amparo.ui.viewmodels.LoginScreenViewModel
 import com.table.tatu.amparo.ui.viewmodels.DenounceScreenViewModel
 import com.table.tatu.amparo.ui.viewmodels.AmparoScreenViewModel
 import com.table.tatu.amparo.ui.viewmodels.CadastroScreenViewModel
+import com.table.tatu.amparo.ui.viewmodels.AjudaScreenViewModel
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -24,6 +25,7 @@ val appModule = module {
     viewModelOf(::DenounceScreenViewModel)
     viewModelOf(::AmparoScreenViewModel)
     viewModelOf(::CadastroScreenViewModel)
+    viewModelOf(::AjudaScreenViewModel)
     singleOf(::AmparoService)
     singleOf(::UserPreferences)
     singleOf(::LocationService)
