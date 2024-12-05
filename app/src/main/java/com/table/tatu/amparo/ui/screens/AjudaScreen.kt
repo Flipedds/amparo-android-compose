@@ -86,7 +86,7 @@ fun AjudaScreen() {
 
                 Spacer(modifier = Modifier.padding(8.dp))
                 Text(
-                    text = "Adicionar Pessoa a rede",
+                    text = "Adicionar pessoa à rede",
                     fontFamily = grandstanderFontFamily,
                     fontSize = 25.sp,
                     color = amparoHomeTextColor,
@@ -100,7 +100,7 @@ fun AjudaScreen() {
             }
             is UiState.Default -> {
                 Text(
-                    text = "Adicionar Pessoa a rede",
+                    text = "Adicionar pessoa à rede",
                     fontFamily = grandstanderFontFamily,
                     fontSize = 25.sp,
                     color = amparoHomeTextColor,

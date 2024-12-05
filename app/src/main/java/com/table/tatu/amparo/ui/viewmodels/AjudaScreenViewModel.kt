@@ -62,6 +62,8 @@ class AjudaScreenViewModel(
                 )
 
                 onClearForm()
+
+                _toastEvent.emit("Pessoa adicionada com sucesso.")
                 _supportNetworkState.value = UiState.Success(updatedUserSupportNetwork)
 
             } catch (e: HttpException) {

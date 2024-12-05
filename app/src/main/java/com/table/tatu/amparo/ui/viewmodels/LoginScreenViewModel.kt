@@ -46,10 +46,9 @@ class LoginScreenViewModel(
             } catch (e: HttpException) {
                 when (e.code()) {
                     400 -> _toastEvent.emit("Requisição inválida! Verifique os dados e tente novamente.")
-                    401 -> _toastEvent.emit("Login ou senha incorretos!")
                     403 -> _toastEvent.emit("Acesso negado!")
-                    500 -> _toastEvent.emit("Erro no servidor. Tente novamente mais tarde.")
-                    else -> _toastEvent.emit("Erro inesperado: ${e.message()}")
+                    500 -> _toastEvent.emit("Login ou senha incorretos!")
+                    else -> _toastEvent.emit("Erro no servidor. Tente novamente mais tarde.: ${e.message()}")
                 }
             } catch (e: IOException) {
                 _toastEvent.emit("Falha na conexão com o servidor. Verifique sua internet e tente novamente.")

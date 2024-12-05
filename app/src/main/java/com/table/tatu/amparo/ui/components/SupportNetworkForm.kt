@@ -91,7 +91,7 @@ fun SupportNetworkForm(
             mutableStateOf("")
         }
 
-        val mask = "([00]) 9[0000]-[0000]"
+        val mask = "([00]) [0][0000]-[0000]"
         val visualTransformation = remember(mask) {
             PhoneInputMaskVisualTransformation(mask)
         }
