@@ -1,6 +1,8 @@
 package com.table.tatu.amparo.ui.screens
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -8,16 +10,19 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -33,7 +38,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.table.tatu.amparo.R
 import com.table.tatu.amparo.ui.theme.amparoButtonColor
+import com.table.tatu.amparo.ui.theme.amparoHomeTextColor
 import com.table.tatu.amparo.ui.theme.amparoMenuColor
+import com.table.tatu.amparo.ui.theme.grandstanderFontFamily
 
 sealed class NavItem(
     @DrawableRes val icon: Int,
@@ -93,6 +100,48 @@ fun HomeScreen(onLogout: () -> Unit) {
         selectedItem = items[pagerState.targetPage]
     }
 
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+
+    AnimatedVisibility(visible = showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            containerColor = amparoMenuColor,
+            icon = {
+                Image(
+                    painterResource(id = R.drawable.ic_amparo_launcher),
+                    contentDescription = "Logo Amparo",
+                    modifier = Modifier
+                        .width(302.dp)
+                        .height(114.dp)
+                )
+            },
+            text = {
+                Text("Você tem certeza que deseja sair ?",
+                    fontFamily = grandstanderFontFamily,
+                    fontSize = 16.sp,
+                    color = amparoHomeTextColor)
+            },
+            confirmButton = {
+                TextButton(onClick =  { onLogout() }) {
+                    Text("Sair",
+                        fontFamily = grandstanderFontFamily,
+                        fontSize = 16.sp,
+                        color = amparoHomeTextColor)
+                }
+            },
+            dismissButton = {
+                TextButton(onClick =  { showDialog = false }) {
+                    Text("Cancelar",
+                        fontFamily = grandstanderFontFamily,
+                        fontSize = 16.sp,
+                        color = amparoHomeTextColor)
+                }
+            }
+        )
+    }
+
     Scaffold(
         bottomBar = {
             BottomAppBar(containerColor = amparoMenuColor) {
@@ -124,7 +173,7 @@ fun HomeScreen(onLogout: () -> Unit) {
         floatingActionButton = {
             FloatingActionButton(
                 containerColor = amparoButtonColor,
-                onClick = { onLogout() }) {
+                onClick = { showDialog = true }) {
                 Icon(imageVector = Icons.Default.Close, contentDescription = "Sair")
             }
         }

@@ -1,5 +1,6 @@
 package com.table.tatu.amparo.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -11,10 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +36,15 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun PostsScreen() {
+    val viewModel = koinViewModel<PostScreenViewModel>()
+    val postsState by viewModel.postsState.collectAsState()
+    val context = LocalContext.current
+
+    LaunchedEffect(viewModel.toastEvent) {
+        viewModel.toastEvent.collect { message ->
+            Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+        }
+    }
     Column(
         Modifier
             .fillMaxSize()
@@ -85,8 +97,6 @@ fun PostsScreen() {
                     .offset(y = -(20).dp)
             )
         }
-        val viewModel = koinViewModel<PostScreenViewModel>()
-        val postsState by viewModel.postsState.collectAsState()
 
         when (postsState) {
             is UiState.Loading -> LoadingAnimation(
@@ -94,7 +104,9 @@ fun PostsScreen() {
                     .align(Alignment.CenterHorizontally)
             )
 
-            is UiState.Success -> PostSection(posts = (postsState as UiState.Success<List<Post>>).data)
+            is UiState.Success -> PostSection(
+                posts = (postsState as UiState.Success<List<Post>>).data,
+                viewModel)
             is UiState.Error -> Text(
                 modifier = Modifier.padding(horizontal = 31.5.dp),
                 text = (postsState as UiState.Error).message
@@ -102,7 +114,6 @@ fun PostsScreen() {
 
             UiState.Default -> TODO()
         }
-
     }
 }
 

@@ -33,7 +33,9 @@ class CadastroScreenViewModel(
                 val userCredential = user.toUserCredential()
 
                 userHeader.name = form.nome
+                userHeader.age = form.age
                 userCredential.cpf = form.cpf
+                userCredential.phoneNumber = form.phoneNumber
 
                 amparoService.updateHeaderUser("Bearer ${authLoginResponse.accessToken}", userHeader)
                 amparoService.updateCredentialUser("Bearer ${authLoginResponse.accessToken}", userCredential)

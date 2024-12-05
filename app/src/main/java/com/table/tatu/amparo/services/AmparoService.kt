@@ -9,18 +9,12 @@ import com.table.tatu.amparo.models.User
 import com.table.tatu.amparo.models.UserCredential
 import com.table.tatu.amparo.models.UserHeader
 import com.table.tatu.amparo.repositories.AmparoRepository
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class AmparoService(
     private val amparoRepository: AmparoRepository
 ) {
-    suspend fun getAllPosts(): Flow<List<Post>> = flow {
-        while (true) {
-            emit(amparoRepository.findAllPosts("application/json"))
-            delay(5000)
-        }
+    suspend fun getAllPosts(): List<Post> {
+        return amparoRepository.findAllPosts("application/json")
     }
 
     suspend fun getUserSupportNetwork(token: String): MutableList<SupportNetwork> {
